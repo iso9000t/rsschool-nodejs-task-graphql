@@ -1,6 +1,8 @@
-import { PrismaClient } from '@prisma/client';
+import { MemberType, Post, PrismaClient, Profile, User } from '@prisma/client';
+import DataLoader from 'dataloader';
 
 export type Context = {
+  dataLoaders: DataLoaders;
   prisma: PrismaClient;
 };
 
@@ -62,3 +64,18 @@ export type UserSubscribedTo = {
   userId: string;
   authorId: string;
 };
+
+export interface UserSubs extends User {
+  userSubscribedTo?: Subs[];
+  subscribedToUser?: Subs[];
+}
+interface Subs {
+  authorId: string;
+  subscriberId: string;
+}
+export interface DataLoaders {
+  postsLoader: DataLoader<string, Post[]>;
+  profileLoader: DataLoader<string, Profile>;
+  memberLoader: DataLoader<string, MemberType>;
+  userLoader: DataLoader<string, User>;
+}
